@@ -46,6 +46,12 @@ def get_type(type):
         postfix = ' ' * ((length - len(type)) // 2)
         return f'[{prefix}{type}{postfix}]'
 
+def critical(text = ''):
+    time = f'{colors.fg.cyan}{colors.bold}{get_time()}{colors.reset}'
+    type = f'{colors.bg.red}{colors.bold}{get_type("CRITICAL")}{colors.reset}'
+    text = f'{text}'
+    print(f'{time} {type} {text}')
+
 def error(text = ''):
     time = f'{colors.fg.cyan}{colors.bold}{get_time()}{colors.reset}'
     type = f'{colors.fg.red}{colors.bold}{get_type("ERROR")}{colors.reset}'
@@ -67,12 +73,6 @@ def log(text = ''):
 def success(text = ''):
     time = f'{colors.fg.cyan}{colors.bold}{get_time()}{colors.reset}'
     type = f'{colors.fg.green}{colors.bold}{get_type("SUCCESS")}{colors.reset}'
-    text = f'{text}'
-    print(f'{time} {type} {text}')
-
-def critical(text = ''):
-    time = f'{colors.fg.cyan}{colors.bold}{get_time()}{colors.reset}'
-    type = f'{colors.bg.red}{colors.bold}{get_type("CRITICAL")}{colors.reset}'
     text = f'{text}'
     print(f'{time} {type} {text}')
 
