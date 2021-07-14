@@ -46,50 +46,52 @@ def get_type(type):
         postfix = ' ' * ((length - len(type)) // 2)
         return f'[{prefix}{type}{postfix}]'
 
-def critical(text = ''):
-    time = f'{colors.fg.cyan}{colors.bold}{get_time()}{colors.reset}'
-    type = f'{colors.bg.red}{colors.bold}{get_type("CRITICAL")}{colors.reset}'
-    text = f'{text}'
-    print(f'{time} {type} {text}')
 
-def error(text = ''):
-    time = f'{colors.fg.cyan}{colors.bold}{get_time()}{colors.reset}'
-    type = f'{colors.fg.red}{colors.bold}{get_type("ERROR")}{colors.reset}'
-    text = f'{text}'
-    print(f'{time} {type} {text}')
-
-def warning(text = ''):
-    time = f'{colors.fg.cyan}{colors.bold}{get_time()}{colors.reset}'
-    type = f'{colors.fg.orange}{colors.bold}{get_type("WARNING")}{colors.reset}'
-    text = f'{text}'
-    print(f'{time} {type} {text}')
-
-def log(text = ''):
-    time = f'{colors.fg.cyan}{colors.bold}{get_time()}{colors.reset}'
-    type = f'{colors.fg.lightblue}{colors.bold}{get_type("LOG")}{colors.reset}'
-    text = f'{text}'
-    print(f'{time} {type} {text}')
-
-def success(text = ''):
-    time = f'{colors.fg.cyan}{colors.bold}{get_time()}{colors.reset}'
-    type = f'{colors.fg.green}{colors.bold}{get_type("SUCCESS")}{colors.reset}'
-    text = f'{text}'
-    print(f'{time} {type} {text}')
-
-def new(text = ''):
-    time = f'{colors.fg.cyan}{colors.bold}{get_time()}{colors.reset}'
-    type = f'{colors.fg.green}{colors.bold}{get_type("+")}{colors.reset}'
-    text = f'{text}'
-    print(f'{time} {type} {text}')
-
-def debug(text = ''):
-    time = f'{colors.fg.cyan}{colors.bold}{get_time()}{colors.reset}'
-    type = f'{colors.fg.purple}{colors.bold}{get_type("DEBUG")}{colors.reset}'
-    text = f'{text}'
-    print(f'{time} {type} {text}')
-
-def custom(text = '', type = '', typecolor: colors = colors.fg.lightblue):
+def custom(*data, type = '', typecolor: colors = colors.fg.lightblue):
     time = f'{colors.fg.cyan}{colors.bold}{get_time()}{colors.reset}'
     type = f'{typecolor}{colors.bold}{get_type(type)}{colors.reset}'
-    text = f'{text}'
+    text = f'{" ".join([str(x) for x in data])}'
     print(f'{time} {type} {text}')
+    
+def critical(*data):
+    custom(*data, type='CRITICAL', typecolor=colors.bg.red)
+
+def error(*data):
+    custom(*data, type='ERROR', typecolor=colors.fg.red)
+
+def warning(*data):
+    custom(*data, type='WARNING', typecolor=colors.fg.orange)
+
+def log(data = ''):
+    info(data)
+
+def info(*data):
+    custom(*data, type='INFO', typecolor=colors.fg.lightblue)
+
+def success(*data):
+    custom(*data, type='SUCCESS', typecolor=colors.fg.green)
+
+def debug(*data):
+    custom(*data, type='DEBUG', typecolor=colors.fg.purple)
+
+
+def plus(*data):
+    custom(*data, type='+', typecolor=colors.fg.green)
+
+def minus(*data):
+    custom(*data, type='-', typecolor=colors.fg.red)
+
+
+def demo():
+    critical('This is .critical()')
+    error('This is .error()')
+    warning('This is .warning()')
+    info('This is .info()')
+    success('This is .success()')
+    debug('This is .debug()')
+    print()
+    plus('This is .plus()')
+    minus('This is .minus()')
+
+if __name__ == '__main__':
+    demo()
