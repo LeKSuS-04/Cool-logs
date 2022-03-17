@@ -35,7 +35,7 @@ log = coollogs.Logger(colorful=True, infolength=9, timecolor=coollogs.Colors.fg.
 |------------|:---------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------|:-----------------------:|
 |  colorful  |       bool      | Turns on/off color stylizing of the output                                                                                                          |           True          |
 |  loglevel  |       int       | Sets log level for the logger                                                                                                                       |            31           |
-| infolength |       int       | Determines amount of space for information block.  If information is longer than *infolength*, it'll be cut; otherwise it'll be padded with spaces. |            9            |
+|  labelsize |       int       | Determines amount of space for label block.  If information is longer than *labelsize*, it'll be cut; otherwise it'll be padded with spaces.        |            9            |
 |  timecolor | coollogs.Colors | Sets color for time                                                                                                                                 | coollogs.Colors.fg.CYAN |
 
 ## Advanced: Custom logs
@@ -46,7 +46,7 @@ log.custom('Hello, custom!', infoname='', infocolor=Colors.fg.CYAN)
 | Parameter |       Type      | Purpose                                                                                                         | Default value           |
 |-----------|:---------------:|-----------------------------------------------------------------------------------------------------------------|:-----------------------:|
 |  infoname |       str       | Sets text in custom information block                                                                           |            ""           |
-| infocolor | coollogs.Colors | Sets color of custom information block. Can be a sum of different coollogs.Colors values to create mixed styles | coollogs.Colors.fg.CYAN |
+| labelcolor| coollogs.Colors | Sets color of custom information block. Can be a sum of different coollogs.Colors values to create mixed styles | coollogs.Colors.fg.CYAN |
 
 ## Advanced: Logging level
 Even though there are 10 built-in logging modes, only 5 of them are "basic": debug, info, warning, error and critical. You can set logging level by using .set_level(int) on your logger object, for example:
@@ -64,12 +64,12 @@ Values for each level are as follows:
 |   DEBUG  |   16  |
 
 So, for example, to show everything except debug messages, you have to set logging level to 1 + 2 + 4 + 8 = 15.  
-You don't have to memorize all the values, there are constants in LogLevels class to help you with it:
+You don't have to memorize all the values, there are constants in log_level class to help you with it:
 ```
-coollogs.LogLevels.CRITICAL = 1
-coollogs.LogLevels.ERROR    = 2
-coollogs.LogLevels.WARNING  = 4
-coollogs.LogLevels.INFO     = 8
-coollogs.LogLevels.DEBUG    = 16
-coollogs.LogLevels.ALL      = 31
+coollogs.log_level.CRITICAL = 1
+coollogs.log_level.ERROR    = 2
+coollogs.log_level.WARNING  = 4
+coollogs.log_level.INFO     = 8
+coollogs.log_level.DEBUG    = 16
+coollogs.log_level.ALL      = 31
 ```

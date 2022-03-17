@@ -36,7 +36,7 @@ class Colors:
         LIGHTGRAY     = '\033[47m'
 
 
-class LogLevels():
+class log_level():
     CRITICAL = 1
     ERROR    = 2
     WARNING  = 4
@@ -45,86 +45,78 @@ class LogLevels():
     ALL      = 31
 
 class Logger():
-    def __init__(self, colorful: bool = True, loglevel: int = LogLevels.ALL, infolength: int = 9, timecolor: Colors = Colors.fg.CYAN):
+    def __init__(self, colorful: bool = True, log_level: int = log_level.ALL, 
+                    label_size: int = 9, time_color: Colors = Colors.fg.CYAN):
         self._colorful = colorful
-        self._infolength = infolength
-        self._timecolor = timecolor
-        self._loglevel = loglevel
-
+        self._label_size = label_size
+        self._time_color = time_color
+        self._log_level = log_level
 
     def _get_time(self):
         return '[' + time.strftime("%H:%M:%S", time.localtime()) + ']'
 
-    def _get_info(self, infoname):
-        length = self._infolength
+    def _get_label(self, label_name):
+        length = self._label_size
 
-        if len(infoname) >= length:
+        if len(label_name) >= length:
             prefix = '['
             postfix = ']'
-            infoname = infoname[:length]
+            label_name = label_name[:length]
         else:
-            prefix = '[' + ' ' * ((length + 1- len(infoname)) // 2)
-            postfix = ' ' * ((length - len(infoname)) // 2) + ']'
+            prefix = '[' + ' ' * ((length + 1- len(label_name)) // 2)
+            postfix = ' ' * ((length - len(label_name)) // 2) + ']'
 
-        return prefix + infoname + postfix
+        return prefix + label_name + postfix
 
+    def set_level(self, log_level: int):
+        self._log_level = log_level
 
-    def set_level(self, loglevel: int):
-        self._loglevel = loglevel
-
-
-    def custom(self, *data, infoname='', infocolor: Colors = Colors.fg.CYAN):
+    def custom(self, *data, label_name='', labelcolor: Colors = Colors.fg.CYAN):
         if self._colorful:
-            time_color = self._timecolor + Colors.style.BOLD
-            info_color = infocolor + Colors.style.BOLD
+            time_color = self._time_color + Colors.style.BOLD
+            label_color = labelcolor + Colors.style.BOLD
             reset = Colors.style.RESET
         else:
-            time_color = info_color = reset = ''
-
+            time_color = label_color = reset = ''
 
         time = time_color + self._get_time() + reset
 
-        info = info_color + self._get_info(infoname) + reset
+        label = label_color + self._get_label(label_name) + reset
         text = f'{" ".join([str(x) for x in data])}'
 
-        print(f'{time} {info} {text}')
+        print(f'{time} {label} {text}')
         
-
     def critical(self, *data):
-        if self._loglevel & (1 << 0):
-            self.custom(*data, infoname='CRITICAL', infocolor=Colors.bg.RED)
+        if self._log_level & (1 << 0):
+            self.custom(*data, label_name='CRITICAL', labelcolor=Colors.bg.RED)
 
     def error(self, *data):
-        if self._loglevel & (1 << 1):
-            self.custom(*data, infoname='ERROR', infocolor=Colors.fg.RED)
+        if self._log_level & (1 << 1):
+            self.custom(*data, label_name='ERROR', labelcolor=Colors.fg.RED)
 
     def warning(self, *data):
-        if self._loglevel & (1 << 2):
-            self.custom(*data, infoname='WARNING', infocolor=Colors.fg.ORANGE)
+        if self._log_level & (1 << 2):
+            self.custom(*data, label_name='WARNING', labelcolor=Colors.fg.ORANGE)
 
     def info(self, *data):
-        if self._loglevel & (1 << 3):
-            self.custom(*data, infoname='INFO', infocolor=Colors.fg.CYAN)
+        if self._log_level & (1 << 3):
+            self.custom(*data, label_name='INFO', labelcolor=Colors.fg.CYAN)
 
     def debug(self, *data):
-        if self._loglevel & (1 << 4):
-            self.custom(*data, infoname='DEBUG', infocolor=Colors.fg.PURPLE)
-
+        if self._log_level & (1 << 4):
+            self.custom(*data, label_name='DEBUG', labelcolor=Colors.fg.PURPLE)
 
     def plus(self, *data):
-        self.custom(*data, infoname='+', infocolor=Colors.fg.GREEN)
+        self.custom(*data, label_name='+', labelcolor=Colors.fg.GREEN)
 
     def minus(self, *data):
-        self.custom(*data, infoname='-', infocolor=Colors.fg.RED)
-
+        self.custom(*data, label_name='-', labelcolor=Colors.fg.RED)
     
     def success(self, *data):
-        self.custom(*data, infoname='SUCCESS', infocolor=Colors.fg.GREEN)
+        self.custom(*data, label_name='SUCCESS', labelcolor=Colors.fg.GREEN)
 
     def failure(self, *data):
-        self.custom(*data, infoname='FAILURE', infocolor=Colors.fg.RED)
-
-
+        self.custom(*data, label_name='FAILURE', labelcolor=Colors.fg.RED)
 
     def demo(self):
         self.critical('This is .critical()')
@@ -139,9 +131,10 @@ class Logger():
         self.success('This is .success()')
         self.failure('This is .failure()')
         print()
-        self.custom('This is custom one, with infocolor = Colors.fg.ORANGE', infoname='CUSTOM #1', infocolor=Colors.fg.ORANGE)
-        self.custom('This is custom one, with infocolor = Colors.bg.PURPLE', infoname='CUSTOM #2', infocolor=Colors.bg.PURPLE)
-        self.custom('This is custom one, with infocolor = Colors.fg.BLACK + Colors.bg.ORANGE', infoname='CUSTOM #3', infocolor=Colors.fg.BLACK + Colors.bg.ORANGE)
+        self.custom('This is custom one, with labelcolor = Colors.fg.ORANGE', label_name='CUSTOM #1', labelcolor=Colors.fg.ORANGE)
+        self.custom('This is custom one, with labelcolor = Colors.bg.PURPLE', label_name='CUSTOM #2', labelcolor=Colors.bg.PURPLE)
+        self.custom('This is custom one, with labelcolor = Colors.fg.BLACK + Colors.bg.ORANGE', label_name='CUSTOM #3', labelcolor=Colors.fg.BLACK + Colors.bg.ORANGE)
+
 
 if __name__ == '__main__':
     log = Logger()
