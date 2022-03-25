@@ -2,17 +2,17 @@
  Simple output beautifier for python 3
 
 ## Basic usage:
-To use coollogs, you need to initialise Logger object. After that you can use it as you want!
+To use coollogs, you need to import `log` object from this module: 
 ```
-import coollogs
-log = coollogs.Logger()
+from coollogs import log
 log.success('Hello, logs!')
 ```  
 The output will be as follows:  
 ![Examples](screenshots/basic_usage_output.png)
 
 ## Logging modes
-When logging, each message will be prefixed with current time (hh:mm:ss) and it's type. There are 10 built-in logging modes:
+When logging, each message will be prefixed with current time (hh:mm:ss) and
+it's type. There are 10 built-in logging modes:
 * Critical - for VERY important messages (red background)
 * Error - for errors and stuff (red foreground)
 * Warning - you guessed it: for warnings (orange foreground)
@@ -29,7 +29,8 @@ When logging, each message will be prefixed with current time (hh:mm:ss) and it'
 ## Advanced: Logger object
 When creating logger object you can pass 3 different parameters to constructor:
 ```
-log = coollogs.Logger(colorful=True, infolength=9, timecolor=coollogs.Colors.fg.CYAN)
+log = coollogs.Logger(colorful=True, infolength=9, 
+                      timecolor=coollogs.Colors.fg.CYAN)
 ```
 | Parameter  |       Type      | Purpose                                                                                                                                             | Default value           |
 |------------|:---------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------|:-----------------------:|

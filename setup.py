@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='coollogs',
-    version='0.1.2',
+    version='0.2.0',
     description='Simple output beautifier for python 3',
     url='https://github.com/LeKSuS-04/Cool-logs',
     author='Alexey Tarasov',
@@ -11,7 +11,7 @@ setup(
     packages=['coollogs'],
     install_requires=[],
     classifires=[
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 3 - Alpha',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',

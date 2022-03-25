@@ -1,7 +1,15 @@
+"""Main source code for ``coollogs`` package. Visit github repository
+for more information:
+https://github.com/LeKSuS-04/Cool-logs
+"""
+
 import time
 
+
 class Colors:
+    """Console stylization constants"""    
     class style:
+        """Different styles for text"""
         RESET         = '\033[0m'
         BOLD          = '\033[01m'
         DISABLE       = '\033[02m'
@@ -10,6 +18,7 @@ class Colors:
         STRIKETHROUGH = '\033[09m'
         INVISIBLE     = '\033[08m'
     class fg:
+        """Foreground colors for text"""
         BLACK         = '\033[30m'
         RED           = '\033[31m'
         GREEN         = '\033[32m'
@@ -26,6 +35,7 @@ class Colors:
         PINK          = '\033[95m'
         LIGHTCYAN     = '\033[96m'
     class bg:
+        """Background colors for text"""
         BLACK         = '\033[40m'
         RED           = '\033[41m'
         GREEN         = '\033[42m'
@@ -36,7 +46,8 @@ class Colors:
         LIGHTGRAY     = '\033[47m'
 
 
-class log_level():
+class log_level:
+    """Avaliable log levels for logger"""
     CRITICAL = 1
     ERROR    = 2
     WARNING  = 4
@@ -45,8 +56,22 @@ class log_level():
     ALL      = 31
 
 class Logger():
+    """Beautifies console printing"""
     def __init__(self, colorful: bool = True, log_level: int = log_level.ALL, 
                     label_size: int = 9, time_color: Colors = Colors.fg.CYAN):
+        """Initializes ``Logger`` object with some settings
+
+        Args:
+            colorful (bool, optional): specifies if colors need to be
+                applied to logger. Is useful when terminal doesn't
+                support colors. Defaults to True.
+            log_level (int, optional): Log levels to show by default. 
+                Defaults to log_level.ALL.
+            label_size (int, optional): Size of information label of logger.
+                Defaults to 9.
+            time_color (Colors, optional): Color of time block of logger.
+                Defaults to Colors.fg.CYAN.
+        """        
         self._colorful = colorful
         self._label_size = label_size
         self._time_color = time_color
@@ -69,12 +94,34 @@ class Logger():
         return prefix + label_name + postfix
 
     def set_level(self, log_level: int):
+        """Sets logging level of this logger. Logging level is
+        represented by integer, where each bit shows whether or not
+        this level needs to be shown:
+            1: CRITICAL
+            2: ERROR
+            4: WARNING
+            8: INFO
+            16: DEBUG
+            31: ALL
+
+        You can use log_level class with pre-defined constants or pass
+        integer to specify custom rules
+        """
         self._log_level = log_level
 
-    def custom(self, *data, label_name='', labelcolor: Colors = Colors.fg.CYAN):
+    def custom(self, *data, label_name: str = '', label_color: Colors = Colors.fg.CYAN):
+        """Logs data with custom label. Logging format is as follows:
+            $ [TIME] [LABEL] data
+        
+        Arguments:
+            label_name (str): string that is displayed on label.
+                Defaults to empty string.
+            label_color (Colors): style of label. Can be sum of
+                multiple Colors instances. Defaults to Colors.fg.CYAN.
+        """
         if self._colorful:
             time_color = self._time_color + Colors.style.BOLD
-            label_color = labelcolor + Colors.style.BOLD
+            label_color = label_color + Colors.style.BOLD
             reset = Colors.style.RESET
         else:
             time_color = label_color = reset = ''
@@ -87,38 +134,48 @@ class Logger():
         print(f'{time} {label} {text}')
         
     def critical(self, *data):
+        """Logs data with ``critical`` label"""
         if self._log_level & (1 << 0):
-            self.custom(*data, label_name='CRITICAL', labelcolor=Colors.bg.RED)
+            self.custom(*data, label_name='CRITICAL', label_color=Colors.bg.RED)
 
     def error(self, *data):
+        """Logs data with ``error`` label"""
         if self._log_level & (1 << 1):
-            self.custom(*data, label_name='ERROR', labelcolor=Colors.fg.RED)
+            self.custom(*data, label_name='ERROR', label_color=Colors.fg.RED)
 
     def warning(self, *data):
+        """Logs data with ``warning`` label"""
         if self._log_level & (1 << 2):
-            self.custom(*data, label_name='WARNING', labelcolor=Colors.fg.ORANGE)
+            self.custom(*data, label_name='WARNING', label_color=Colors.fg.ORANGE)
 
     def info(self, *data):
+        """Logs data with ``info`` label"""
         if self._log_level & (1 << 3):
-            self.custom(*data, label_name='INFO', labelcolor=Colors.fg.CYAN)
+            self.custom(*data, label_name='INFO', label_color=Colors.fg.CYAN)
 
     def debug(self, *data):
+        """Logs data with ``debug`` label"""
         if self._log_level & (1 << 4):
-            self.custom(*data, label_name='DEBUG', labelcolor=Colors.fg.PURPLE)
+            self.custom(*data, label_name='DEBUG', label_color=Colors.fg.PURPLE)
 
     def plus(self, *data):
-        self.custom(*data, label_name='+', labelcolor=Colors.fg.GREEN)
+        """Logs data with ``plus`` label"""
+        self.custom(*data, label_name='+', label_color=Colors.fg.GREEN)
 
     def minus(self, *data):
-        self.custom(*data, label_name='-', labelcolor=Colors.fg.RED)
+        """Logs data with ``minus`` label"""
+        self.custom(*data, label_name='-', label_color=Colors.fg.RED)
     
     def success(self, *data):
-        self.custom(*data, label_name='SUCCESS', labelcolor=Colors.fg.GREEN)
+        """Logs data with ``success`` label"""
+        self.custom(*data, label_name='SUCCESS', label_color=Colors.fg.GREEN)
 
     def failure(self, *data):
-        self.custom(*data, label_name='FAILURE', labelcolor=Colors.fg.RED)
+        """Logs data with ``failure`` label"""
+        self.custom(*data, label_name='FAILURE', label_color=Colors.fg.RED)
 
     def demo(self):
+        """Shows all possible logging levels"""
         self.critical('This is .critical()')
         self.error('This is .error()')
         self.warning('This is .warning()')
@@ -131,9 +188,9 @@ class Logger():
         self.success('This is .success()')
         self.failure('This is .failure()')
         print()
-        self.custom('This is custom one, with labelcolor = Colors.fg.ORANGE', label_name='CUSTOM #1', labelcolor=Colors.fg.ORANGE)
-        self.custom('This is custom one, with labelcolor = Colors.bg.PURPLE', label_name='CUSTOM #2', labelcolor=Colors.bg.PURPLE)
-        self.custom('This is custom one, with labelcolor = Colors.fg.BLACK + Colors.bg.ORANGE', label_name='CUSTOM #3', labelcolor=Colors.fg.BLACK + Colors.bg.ORANGE)
+        self.custom('This is custom one, with labelcolor = Colors.fg.ORANGE', label_name='CUSTOM #1', label_color=Colors.fg.ORANGE)
+        self.custom('This is custom one, with labelcolor = Colors.bg.PURPLE', label_name='CUSTOM #2', label_color=Colors.bg.PURPLE)
+        self.custom('This is custom one, with labelcolor = Colors.fg.BLACK + Colors.bg.ORANGE', label_name='CUSTOM #3', label_color=Colors.fg.BLACK + Colors.bg.ORANGE)
 
 
 if __name__ == '__main__':
