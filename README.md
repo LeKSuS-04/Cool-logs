@@ -1,7 +1,13 @@
 # Cool logs
  Simple output beautifier for python 3
 
-## Basic usage:
+## Installation
+You can install this package using `pip`:
+```
+pip install coollogs
+```
+
+## Basic usage
 To use coollogs, you need to import `log` object from this module: 
 ```
 from coollogs import log
