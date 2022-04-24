@@ -78,5 +78,4 @@ coollogs.log_level.ERROR    = 2
 coollogs.log_level.WARNING  = 4
 coollogs.log_level.INFO     = 8
 coollogs.log_level.DEBUG    = 16
-coollogs.log_level.ALL      = 31
-```
+coollogs.log_level.ALL      = 31 ```
