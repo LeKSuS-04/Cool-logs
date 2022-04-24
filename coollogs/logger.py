@@ -126,12 +126,35 @@ class Logger():
         else:
             time_color = label_color = reset = ''
 
-        time = time_color + self._get_time() + reset
+        time = self._get_time()
+        time_colored = time_color + self._get_time() + reset
 
-        label = label_color + self._get_label(label_name) + reset
+        label = self._get_label(label_name)
+        label_colored = label_color + self._get_label(label_name) + reset
         text = f'{" ".join([str(x) for x in data])}'
+        
+        lines = text.splitlines()
+        for i, line in enumerate(lines):
+            if i == 0:
+                prefix = f'{time_colored} {label_colored}'
+            elif i == len(lines) - 1:
+                prefix = (
+                    ' ' * (len(time) + len(label) - 1) 
+                    + label_color 
+                    + '*-' 
+                    + reset
+                )
+            else:
+                prefix = (
+                    ' ' * (len(time) + len(label) - 1)
+                    + label_color 
+                    + '| ' 
+                    + reset
+                )
 
-        print(f'{time} {label} {text}')
+            lines[i] = f'{prefix} {line}'
+
+        print('\n'.join(lines))
         
     def critical(self, *data):
         """Logs data with ``critical`` label"""
@@ -191,6 +214,14 @@ class Logger():
         self.custom('This is custom one, with labelcolor = Colors.fg.ORANGE', label_name='CUSTOM #1', label_color=Colors.fg.ORANGE)
         self.custom('This is custom one, with labelcolor = Colors.bg.PURPLE', label_name='CUSTOM #2', label_color=Colors.bg.PURPLE)
         self.custom('This is custom one, with labelcolor = Colors.fg.BLACK + Colors.bg.ORANGE', label_name='CUSTOM #3', label_color=Colors.fg.BLACK + Colors.bg.ORANGE)
+        print()
+        self.info(
+            'This is multiline text\n'
+            + 'And another line\n'
+            + 'And one more\n'
+            + 'Oke this is the last one I swear\n'
+            + 'Bye bye!!'
+        )
 
 
 if __name__ == '__main__':

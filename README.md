@@ -30,6 +30,7 @@ it's type. There are 10 built-in logging modes:
 * Failure - to get upset about the failure  (red foreground)  
 * Custom - Set it how you like (custom type and color, explained later)  
 
+This is how it looks on my system:
 ![Examples](screenshots/logs_example.png)
 
 ## Advanced: Logger object
